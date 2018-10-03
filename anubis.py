@@ -1,11 +1,14 @@
 import requests
 import binascii
 from bs4 import BeautifulSoup
-from os import popen, chdir, system,path
+from os import popen, chdir,path,devnull
 import base64
 import sys
 from glob import glob
 from typing import List
+from subprocess import Popen
+
+FNULL = open(devnull, 'w')
 '''
 usage
 
@@ -71,23 +74,29 @@ def getkey(filename: str) -> List[str]:
 def adbRun(adb: str, packageName: str):
     if not path.isfile("androidDump.out"):
         print("Downloading androidDump.out ..")
-        response = requests.get("https://raw.githubusercontent.com/CyberSaxosTiGER/androidDump/blob/master/androidDump.out")
+        response = requests.get("https://github.com/CyberSaxosTiGER/androidDump/releases/download/v1.0/androidDump.out")
         f = open("androidDump.out","wb")
         f.write(response.content)
         f.close()
-    system(adb + ' push androidDump.out /data/local/tmp')
-    system(adb + ' shell \'cd /data/local/tmp && chmod +x androidDump.out && ./androidDump.out ' +
-           packageName + "' &> /dev/null")
-    system(adb + ' pull /data/local/tmp')
+    p = Popen(adb + ' push androidDump.out /data/local/tmp',shell=True,stdout=FNULL,stderr=FNULL)
+    p.wait()
+    p = Popen(adb + ' shell \'cd /data/local/tmp && chmod +x androidDump.out && ./androidDump.out ' +
+           packageName + "' &> /dev/null",shell=True,stdout=FNULL,stderr=FNULL)
+    p.wait()
+    p = Popen(adb + ' pull /data/local/tmp',shell=True,stdout=FNULL,stderr=FNULL)
+    p.wait()
 
 def adbInstall(adb:str,packageName:str):
-    system(adb + ' install '+ packageName)
+    p = Popen(adb + ' install '+ packageName,shell=True,stdout=FNULL,stderr=FNULL)
+    p.wait()
 
 def adbUnsintall(adb:str,packageName:str):
-    system(adb + ' uninstall '+ packageName[:-4])
+    p = Popen(adb + ' uninstall '+ packageName[:-4],shell=True,stdout=FNULL,stderr=FNULL)
+    p.wait()
 
 def run(d2j: str, fileName: str):
-    system(d2j + "d2j-dex2smali.sh  tmp/" + fileName + '.dex' + " > /dev/null")
+    p = Popen(d2j + "d2j-dex2smali.sh tmp/" + fileName + ".dex",shell=True,stdout=FNULL,stderr=FNULL)
+    p.wait()
     fileName = popen("find -maxdepth 1 -type d -name '" +
                      fileName + "-out' &> /dev/null ").read()[:-1][2:]
 
@@ -118,7 +127,6 @@ def main():
         run(dex2jarPath, dexName)
         try:
             keys = getkey(dexName)
-            system("clear")
             print("twitter: ",keys[1])
             print("key:     ",keys[0])
             print("c2:      ",solve(keys[0], keys[2]))
