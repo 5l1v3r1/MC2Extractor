@@ -71,4 +71,4 @@ class AndroidXMLDecompress():
         c = arr[off + 3] << 24 & 0xff000000 | arr[off + 2] << 16 & 0xff0000 | arr[off + 1] << 8 & 0xff00 | arr[off] & 0xFF
         if c < -2147483648 or c > 2147483647:
             return int(-1)
-        return arr[off + 3] << 24 & 0xff000000 | arr[off + 2] << 16 & 0xff0000 | arr[off + 1] << 8 & 0xff00 | arr[off] & 0xFF
+        return c
