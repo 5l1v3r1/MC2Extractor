@@ -1,7 +1,7 @@
 import requests
 import binascii
 from bs4 import BeautifulSoup
-from os import popen, chdir,path,devnull
+from os import popen, chdir,path,devnull,walk,getcwd
 import base64
 import sys
 from glob import glob
@@ -18,6 +18,15 @@ python3 anubis.py '~/platform-tools/adb' '~/apk/d2/' 'anubis.bot.myapplication.a
 '''
 req: https://github.com/CyberSaxosTiGER/androidDump
 '''
+def grep(givenString, rootdir):
+    for folder, dirs, files in walk(rootdir):
+        for file in files:
+            fullpath = path.join(folder, file)
+            with open(fullpath, 'r',encoding="ISO-8859-1") as f:
+                for line in f:
+                    if givenString in line:
+                        return str(fullpath)
+    return None
 
 
 def swap(i, i2, arr):
@@ -54,8 +63,7 @@ def solve(key: str, encoded: str) -> str:
 
 def getkey(filename: str) -> List[str]:
     rt = []
-    pivot = popen('grep -rnai https://twitter ' + filename +
-                  '-out | head -1 ').read().split(':')[0]
+    pivot = grep('https://twitter', str(filename + '-out/'))
     twitter = open(pivot).read().split('\n')[50].split('"')[1]
     
     rt.append(open(pivot).read().split('\n')[56].split('"')[1])
@@ -97,12 +105,12 @@ def adbUnsintall(adb:str,packageName:str):
 def run(d2j: str, fileName: str):
     p = Popen(d2j + "d2j-dex2smali.sh tmp/" + fileName + ".dex",shell=True,stdout=FNULL,stderr=FNULL)
     p.wait()
-    fileName = popen("find -maxdepth 1 -type d -name '" +
-                     fileName + "-out' &> /dev/null ").read()[:-1][2:]
 
 
 def dexExc() -> List[str]:
-    filenames = glob('tmp/?????')
+    bigFileList = glob('tmp/*')
+    bigFileList.pop(0)
+    filenames = [s for s in bigFileList if len(s) == max(len(s) for s in bigFileList)] 
     for filename in filenames:
         with open(filename, 'rb') as f:
             content = f.read()
