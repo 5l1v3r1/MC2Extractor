@@ -16,10 +16,10 @@ c2:       http://92.63.197.108
 ![Anubis](anubis.gif)
 
 ## Fobus Malware 
-[fobus.py](./fobus.py)
+[mazar.py](./mazar.py)
 requirements: androguard 
 
 ```
-/tmp/fobus » python2 fobus.py 93be0ce0b6e3c9f214aed5ac27541580d5a21cefde43118ce871f8dbf409eca8.apk 
+/tmp/mazar » python2 mazar.py 93be0ce0b6e3c9f214aed5ac27541580d5a21cefde43118ce871f8dbf409eca8.apk 
 http://195.161.62.107/index.php?action=command
 ```
