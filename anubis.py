@@ -23,12 +23,14 @@ python3 anubis.py '~/platform-tools/adb' '~/apk/d2/' 'b96742cb8a52add257e62d533f
 req: https://github.com/CyberSaxosTiGER/androidDump
 '''
 
-def clean():
+def clean(adb:str):
     for i in glob('[0-9][0-9]**-out'):
         shutil.rmtree(i, ignore_errors=False, onerror=None)
     for i in glob('.*.apk_files'):
         shutil.rmtree(i, ignore_errors=False, onerror=None)
     shutil.rmtree('.android_tmp/', ignore_errors=False, onerror=None)
+    p = Popen(adb + ' shell \'rm -r /data/local/tmp/anubis_files\'', shell=True, stdout=FNULL, stderr=FNULL)
+    p.wait()
 
 
 def get_packagename(apk: str) -> str:
@@ -109,13 +111,15 @@ def adbRun(adb: str, packageName: str):
         f = open("androidDump.out", "wb")
         f.write(response.content)
         f.close()
-    p = Popen(adb + ' push androidDump.out /data/local/tmp',
+    p = Popen(adb + ' shell \'mkdir /data/local/tmp/anubis_files\'', shell=True, stdout=FNULL, stderr=FNULL)
+    p.wait()
+    p = Popen(adb + ' push androidDump.out /data/local/tmp/anubis_files',
               shell=True, stdout=FNULL, stderr=FNULL)
     p.wait()
-    p = Popen(adb + ' shell \'cd /data/local/tmp && chmod +x androidDump.out && ./androidDump.out ' +
-              packageName + "' &> /dev/null", shell=True, stdout=FNULL, stderr=FNULL)
+    p = Popen(adb + ' shell \'cd /data/local/tmp/anubis_files && chmod +x androidDump.out && ./androidDump.out ' +
+              packageName + "'", shell=True, stdout=FNULL, stderr=FNULL)
     p.wait()
-    p = Popen(adb + ' pull /data/local/tmp .android_tmp',
+    p = Popen(adb + ' pull /data/local/tmp/anubis_files .android_tmp',
               shell=True, stdout=FNULL, stderr=FNULL)
     p.wait()
 
@@ -139,8 +143,7 @@ def run(d2j: str, fileName: str):
 
 
 def dexExc() -> List[str]:
-    bigFileList = glob('.android_tmp/[0-9][0-9][0-9][0-9]*')
-    bigFileList.pop(0)
+    bigFileList = glob('.android_tmp/[0-9][0-9]*[0-9]')
     filenames = [s for s in bigFileList if len(
         s) == max(len(s) for s in bigFileList)]
     for filename in filenames:
@@ -175,7 +178,7 @@ def main():
         except:
             pass
     adbUnsintall(adbPath, packageName)
-    clean()
+    clean(adbPath)
 
 
 main()
