@@ -139,7 +139,7 @@ def run(d2j: str, fileName: str):
 
 
 def dexExc() -> List[str]:
-    bigFileList = glob('.android_tmp/*')
+    bigFileList = glob('.android_tmp/[0-9][0-9][0-9][0-9]*')
     bigFileList.pop(0)
     filenames = [s for s in bigFileList if len(
         s) == max(len(s) for s in bigFileList)]
