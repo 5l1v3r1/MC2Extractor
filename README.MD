@@ -15,7 +15,7 @@ c2:       http://92.63.197.108
 
 ![Anubis](anubis.gif)
 
-## Fobus Malware 
+## Mazar Malware 
 [mazar.py](./mazar.py)
 requirements: androguard 
 
