@@ -10,7 +10,7 @@ def main():
   b = etree.fromstring(a2.get_string_resources(a.get_package()))
   for i in b:
       if i.attrib['name'] == 'domain':
-        print(i.text)
+        print i.text
         break
 
 

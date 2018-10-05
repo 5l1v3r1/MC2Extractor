@@ -7,7 +7,9 @@ def main():
   a = apk.APK(sys.argv[1])
   a2 = a.get_android_resources()
   b = etree.fromstring(a2.get_string_resources(a.get_package()))
-  print(b[2].text)
-
+  for i in b:
+      if i.attrib['name'] == 'server_url':
+        print i.text
+        break
 
 main()
