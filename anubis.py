@@ -47,10 +47,12 @@ def grep(givenString, rootdir):
         for file in files:
             fullpath = path.join(folder, file)
             with open(fullpath, 'r', encoding="ISO-8859-1") as f:
-                for line in f:
+                for i,line in enumerate(f):
                     if givenString in line:
-                        return str(fullpath)
+                        if i == 50:
+                            return str(fullpath)
     return None
+
 
 
 def swap(i, i2, arr):
