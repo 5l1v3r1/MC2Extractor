@@ -23,3 +23,13 @@ requirements: androguard
 /tmp/mazar » python2 mazar.py 93be0ce0b6e3c9f214aed5ac27541580d5a21cefde43118ce871f8dbf409eca8.apk 
 http://195.161.62.107/index.php?action=command
 ```
+
+## RedAlert Malware
+
+[redalert.py](./redalert.py)
+requirements: androguard 
+
+```
+/tmp/redalert » python2 redalert.py 0dace2f1edc580b0f9885f9c45a06d5f9872e8a429c045a85f972f4e8cf62c33.apk   
+http://46.161.42.161:7878
+```
