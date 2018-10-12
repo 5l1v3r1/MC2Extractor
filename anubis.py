@@ -100,7 +100,7 @@ def getkey(filename: str) -> List[str]:
     for tweet in tweets:
         if tweet.find('p', {"class": 'tweet-text'}):
             rt.append(str(tweet.find('p', {
-                      "class": 'tweet-text'}).text.encode('utf8').strip()).split(">")[1].split("<")[0])
+                      "class": 'tweet-text'}).text.encode('utf8').strip()).split(">")[1].split("<")[0].replace(' ',''))
             break
     return rt
 
