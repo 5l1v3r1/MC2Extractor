@@ -3,7 +3,7 @@
 ### MC2Extractor is a script collection for extracting C2 server from a given Android malware
 
 ## Anubis Malware 
-[anubis.py](./anubis.py)
+[anubis.py](./anubis/python-solution/anubis.py)
 
 ```
 /tmp/anubis » python3 anubis.py '~/platform-tools/adb' '~/apk/d2/' b96742cb8a52add257e62d533f0ff84ac8fef98e4ca0ba4a1bbf502e3296897d.apk
@@ -13,10 +13,10 @@ key:      flash1
 c2:       http://92.63.197.108
 ```
 
-![Anubis](anubis.gif)
+![Anubis](images/anubis.gif)
 
 ## Mazar Malware 
-[mazar.py](./mazar.py)
+[mazar.py](./mazar/mazar.py)
 requirements: androguard 
 
 ```
@@ -26,7 +26,7 @@ http://195.161.62.107/index.php?action=command
 
 ## RedAlert Malware
 
-[redalert.py](./redalert.py)
+[redalert.py](./redalert/redalert.py)
 requirements: androguard 
 
 ```
